@@ -17,14 +17,12 @@ yellowLed = 22
 redLed = 25
 state = False
 
-#pushNum = 4
-
 GPIO.setwarnings(False) # stop warnings from displaying
 GPIO.setmode(GPIO.BCM) # BCM numbering scheme for breakout board
 GPIO.setup(greenLed,GPIO.OUT) # sets variable greenLed to an output
 GPIO.setup(yellowLed,GPIO.OUT) # sets variable yellowLed to an output
 GPIO.setup(redLed,GPIO.OUT) # sets variable redLed to an output
-#GPIO.setup(pushNum,GPIO.IN, pull_up_down=GPIO.PUD_UP) # sets variable pushNum to an input
+
 
 def counter():
     text.value = int(text.value) + 1
@@ -32,33 +30,31 @@ def counter():
 def pause():
     sleep(3.0)
     
-def delay_green(): # Turns on BCM output 18
+    
+def run_green(): # Turns on BCM output 18 for 3 seconds
     print("Green ON")
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.HIGH) # Turns on greenLed
+    pause() # 3 second delay
+    GPIO.output(greenLed,GPIO.LOW) # Turns off greenLed
 
-def delay_yellow(): # Turns on BCM output 22
+
+def run_yellow(): # Turns on BCM output 22
     print("Yellow ON")
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.HIGH)# Turns on yellowLed
-
-def delay_red(): # Turns on BCM output 25
+    pause() # 3 second delay
+    GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
+    
+def run_red(): # Turns on BCM output 25
     print("Red ON")
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.HIGH)   # Turns on redLed
-    
-    
-def run_green(): 
-    app.after(3000, delay_green) # 3 second delay before running script
-    
-def run_yellow(): 
-    app.after(6000, delay_yellow) # 3 second delay before running script
-    
-def run_red():  
-    app.after(9000, delay_red)  # 3 second delay before running script 
+    pause() # 3 second delay
+    GPIO.output(redLed,GPIO.LOW) # Turns off redLed
 
 
 def run_cleanUP():
@@ -75,9 +71,6 @@ def start():
     app.repeat(100,run_yellow) # Repeat run_yellow loop
     app.repeat(100,run_red) # Repeat run_red loop
 
-
-
-
 def stop():
     start_button.enable()
     stop_button.disable()
@@ -87,7 +80,6 @@ def stop():
     #GPIO.cleanup() # Clean up GPIO pins
     run_cleanUP()
     message.value = "Traffic lights OFF"
-    #message.color = "red"
     print("Traffic lights OFF")
 
 #Start of GUI Loop
