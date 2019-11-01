@@ -31,29 +31,34 @@ def counter():
 
 def pause():
     sleep(3.0)
-
-def run_green(): #Turns on BCM output 18
+    
+def delay_green(): # Turns on BCM output 18
     print("Green ON")
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.HIGH) # Turns on greenLed
-    pause()
 
-
-def run_yellow(): #Turns on BCM output 22
+def delay_yellow(): # Turns on BCM output 22
     print("Yellow ON")
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.HIGH)# Turns on yellowLed
-    pause()
 
-
-def run_red():
+def delay_red(): # Turns on BCM output 25
     print("Red ON")
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.HIGH)   # Turns on redLed
-    pause()
+    
+    
+def run_green(): 
+    app.after(3000, delay_green) # 3 second delay before running script
+    
+def run_yellow(): 
+    app.after(6000, delay_yellow) # 3 second delay before running script
+    
+def run_red():  
+    app.after(9000, delay_red)  # 3 second delay before running script 
 
 
 def run_cleanUP():
@@ -66,9 +71,9 @@ def start():
     stop_button.enable()
     message.value = "Traffic lights ON" # Displays message in GUI
     print("Traffic lights ON")
-    start_button.repeat(100,run_green) # Repeat run_lights loop)
-    start_button.repeat(100,run_yellow) # Repeat run_yellow loop
-    start_button.repeat(100,run_red) # Repeat run_red loop
+    app.repeat(100,run_green) # Repeat run_lights loop)
+    app.repeat(100,run_yellow) # Repeat run_yellow loop
+    app.repeat(100,run_red) # Repeat run_red loop
 
 
 
@@ -76,9 +81,9 @@ def start():
 def stop():
     start_button.enable()
     stop_button.disable()
-    stop_button.cancel(run_green) # Cancels run_lights loop
-    stop_button.cancel(run_yellow) # Cancels run_yellow loop
-    stop_button.cancel(run_red) # Cancels run_red loop
+    app.cancel(run_green) # Cancels run_lights loop
+    app.cancel(run_yellow) # Cancels run_yellow loop
+    app.cancel(run_red) # Cancels run_red loop
     #GPIO.cleanup() # Clean up GPIO pins
     run_cleanUP()
     message.value = "Traffic lights OFF"
