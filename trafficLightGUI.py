@@ -29,22 +29,32 @@ GPIO.setup(redLed,GPIO.OUT) # sets variable redLed to an output
 def counter():
     text.value = int(text.value) + 1
 
-def run_lights(): #opperates outputs
-    print("Running Lights")
+def pause():
+    sleep(3.0)
+
+def run_green(): #Turns on BCM output 18
+    print("Green ON")
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.HIGH) # Turns on greenLed
-    sleep(3.0)  # Wait 3 seconds
+    pause()
 
+
+def run_yellow(): #Turns on BCM output 22
+    print("Yellow ON")
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
     GPIO.output(yellowLed,GPIO.HIGH)# Turns on yellowLed
-    sleep(3.0)  # Wait 3 seconds
+    pause()
 
+
+def run_red():
+    print("Red ON")
     GPIO.output(yellowLed,GPIO.LOW) # Turns off yellowLed
     GPIO.output(greenLed,GPIO.LOW)  # Turns off greenLed
     GPIO.output(redLed,GPIO.HIGH)   # Turns on redLed
-    sleep(3.0)  # Wait 3 seconds
+    pause()
+
 
 def run_cleanUP():
     GPIO.output(redLed,GPIO.LOW)    # Turns off redLed
@@ -54,16 +64,21 @@ def run_cleanUP():
 def start():
     start_button.disable()
     stop_button.enable()
-    start_button.repeat(100,run_lights) # Repeat run_lights loop every 100ms
     message.value = "Traffic lights ON" # Displays message in GUI
-    #message.color = "green"
     print("Traffic lights ON")
+    start_button.repeat(100,run_green) # Repeat run_lights loop)
+    start_button.repeat(100,run_yellow) # Repeat run_yellow loop
+    start_button.repeat(100,run_red) # Repeat run_red loop
+
+
 
 
 def stop():
     start_button.enable()
     stop_button.disable()
-    stop_button.cancel(run_lights) # Cancels run_lights loop
+    stop_button.cancel(run_green) # Cancels run_lights loop
+    stop_button.cancel(run_yellow) # Cancels run_yellow loop
+    stop_button.cancel(run_red) # Cancels run_red loop
     #GPIO.cleanup() # Clean up GPIO pins
     run_cleanUP()
     message.value = "Traffic lights OFF"
@@ -87,4 +102,3 @@ text.repeat(1000, counter)  # Schedule call to counter() every 1000ms
 
 app.display() # Similar to While loop. Runs from "app=..." to "app.display"
 #End of GUI loop
-
