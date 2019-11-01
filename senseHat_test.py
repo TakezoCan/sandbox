@@ -4,7 +4,7 @@
 # Filename: senseHat_test.py
 # Date: 2018.11.01
 # Author: Curtis Girling
-# Function: practice program for the Sense Hat
+# Function: practice program, Sense Hat animatiom
 #
 
 
